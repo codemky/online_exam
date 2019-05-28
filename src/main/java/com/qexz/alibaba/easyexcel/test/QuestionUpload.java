@@ -5,6 +5,7 @@ import com.qexz.model.Subject;
 import com.qexz.service.ContestService;
 import com.qexz.service.QuestionService;
 import com.qexz.service.SubjectService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -92,6 +93,9 @@ public class QuestionUpload {
         }
         if (questiontype==null||questiontype.equals("")){
             s.append("第"+i+"行第3列不能为空，请检查\n");
+        }else if (!questiontype.equals("单项选择题")&&!questiontype.equals("多项选择题")
+                &&!questiontype.equals("问答题")&&!questiontype.equals("编程题")){
+            s.append("第"+i+"行第3列题目类型设置不正确，请检查\n");
         }
         if (questiontype.equals("单项选择题")||questiontype.equals("多项选择题")){
             if (qurstionoptionA==null||qurstionoptionA.equals("")){
@@ -109,6 +113,16 @@ public class QuestionUpload {
         }
         if (questionanswer==null||questionanswer.equals("")){
             s.append("第"+i+"行第8列不能为空，请检查\n");
+        }else if (questiontype.equals("单项选择题")||questiontype.equals("多项选择题")){
+            questionanswer = questionanswer.toUpperCase();
+            //System.out.println("------->"+questionanswer);
+            int a = StringUtils.countMatches(questionanswer, "A");
+            int b = StringUtils.countMatches(questionanswer, "B");
+            int c = StringUtils.countMatches(questionanswer, "C");
+            int d = StringUtils.countMatches(questionanswer, "D");
+            if (a>1||b>1||c>1||d>1){
+                s.append("第"+i+"行第8列的答案不能有重复的选项不正确，请检查\n");
+            }
         }
         if (questionparse==null||questionparse.equals("")){
             s.append("第"+i+"行第9列不能为空，请检查\n");
@@ -165,25 +179,22 @@ public class QuestionUpload {
         question.setContent(questioncontent);
         if (questiontype.equals("单项选择题")){
             question.setQuestionType(0);
-            question.setOptionA(qurstionoptionA);
-            question.setOptionB(qurstionoptionB);
-            question.setOptionC(qurstionoptionC);
-            question.setOptionD(qurstionoptionD);
-            question.setAnswer(questionanswer);
-            question.setParse(questionparse);
+            questionanswer = questionanswer.toUpperCase();
         }else if (questiontype.equals("多项选择题")){
             question.setQuestionType(1);
-            question.setOptionA(qurstionoptionA);
-            question.setOptionB(qurstionoptionB);
-            question.setOptionC(qurstionoptionC);
-            question.setOptionD(qurstionoptionD);
-            question.setAnswer(questionanswer);
-            question.setParse(questionparse);
+            questionanswer = questionanswer.toUpperCase();
         }else if (questiontype.equals("问答题")){
             question.setQuestionType(2);
         }else if (questiontype.equals("编程题")){
             question.setQuestionType(3);
         }
+        question.setOptionA(qurstionoptionA);
+        question.setOptionB(qurstionoptionB);
+        question.setOptionC(qurstionoptionC);
+        question.setOptionD(qurstionoptionD);
+
+        question.setAnswer(questionanswer);
+        question.setParse(questionparse);
         /*List<Subject> subjects = subjectService.getSubjects();
         for (Subject s: subjects) {
             if (s.getName().equals(questionsubject)){

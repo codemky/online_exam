@@ -69,8 +69,8 @@ public class QuestionController {
         stringBuffer.delete(0,stringBuffer.length());
 //        questionUpload.init();
         List<Object> data = EasyExcelFactory.read(inputStream, new Sheet(1, 1, QuestionModel.class));
+        QuestionUpload.setI(0);
         for (Object o:data) {
-            QuestionUpload.setI(0);
             stringBuffer.append(questionUpload.checkoutQuestion(o));
         }
         if (stringBuffer != null && !stringBuffer.equals("") && stringBuffer.length() > 0) {
@@ -93,7 +93,6 @@ public class QuestionController {
         questionUpload.init();
         List<Object> data = EasyExcelFactory.read(inputStream, new Sheet(1, 1, QuestionModel.class));
         for (Object o:data) {
-            QuestionUpload.setI(0);
             QuestionUpload.setQuestionService(questionService);
             QuestionUpload.setSubjectService(subjectService);
             stringBuffer.append(questionUpload.insertQuestion(o,contest_id));
