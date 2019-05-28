@@ -38,6 +38,7 @@ public class QuestionUpload {
         questionService = this.Qquestion;
         subjectService = this.Ssubject;
         contestService = this.Ccontest;
+        i=0;
     }
     Object o =new Object();
     StringBuffer s = new StringBuffer();
@@ -102,10 +103,10 @@ public class QuestionUpload {
             s.append("第"+i+"行第10列不能为空，请检查");
         }
         if (questionscore.intValue()<0||questionscore.intValue()>100){
-            s.append("第"+i+"行第11列题目分值设置不正确，请检查");
+            s.append("第"+i+"行第11列题目分值设置不正确，请检查\n");
         }
         if (questiondifficulty.intValue()<1||questiondifficulty.intValue()>5){
-            s.append("第"+i+"行第12列难度系数设置不正确，请检查");
+            s.append("第"+i+"行第12列难度系数设置不正确，请检查\n");
         }
         return s;
     }

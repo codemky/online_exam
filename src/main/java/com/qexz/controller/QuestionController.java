@@ -64,6 +64,7 @@ public class QuestionController {
 //        System.out.println(filePath);
 //        InputStream inputStream = FileUtil.getResourcesFileInputStream(filePath);
         stringBuffer.delete(0,stringBuffer.length());
+        questionUpload.init();
         List<Object> data = EasyExcelFactory.read(inputStream, new Sheet(1, 1, QuestionModel.class));
         for (Object o:data) {
             stringBuffer.append(questionUpload.checkoutQuestion(o));
@@ -85,6 +86,7 @@ public class QuestionController {
         AjaxResult ajaxResult = new AjaxResult();
 //        InputStream inputStream = FileUtil.getResourcesFileInputStream(filePath);
         stringBuffer.delete(0,stringBuffer.length());
+        questionUpload.init();
         List<Object> data = EasyExcelFactory.read(inputStream, new Sheet(1, 1, QuestionModel.class));
         for (Object o:data) {
             stringBuffer.append(questionUpload.insertQuestion(o,contest_id));
