@@ -321,5 +321,14 @@ public class AccountController {
         return new AjaxResult().setData(result);
     }
 
-
+    /**
+     * Author: laizhouhao 20:29 2019/5/28
+     * @param
+     * @return
+     * @apiNote:
+     */
+    @GetMapping("/answerDetail")
+    public String showAnswerDetail(){
+        return "/user/answerDetail";
+    }
 }

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" th:href="@{https://cdn.bootcss.com/semantic-ui/2.2.13/semantic.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/app.css}" />
+    <link rel="stylesheet" th:href="@{/css/home.css}" />
+    <script type="text/javascript" th:src="@{https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{https://cdn.bootcss.com/semantic-ui/2.2.13/semantic.min.js}"></script>
+    <script type="text/javascript" th:src="@{https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/app.js}"></script>
+    <script type="text/javascript" th:src="@{/js/home.js}"></script>
+</head>
+<body>
+<div class="ui fixed inverted menu">
+    <a th:href="@{/}" class="header item">
+        <!--<img class="ui" th:src="@{/img/logo_flat.png}" width="104" height="24" alt="" />-->
+        <img class="ui" th:src="@{/img/logo.png}" width="156" height="32" alt="" />
+    </a>
+    <a th:href="@{/contest/index}" href="#" class="item">
+        <i class="desktop icon"></i>在线考试
+    </a>
+    <a th:href="@{/account/myExam}" class="item">
+        <i class="list layout icon"></i>答题记录
+    </a>
+    <a id="logout" class="right item">
+        <i class="sign out icon"></i>退出
+    </a>
+</div>
+<div style="margin-top: 70px; margin-bottom: 30px;">
+    <div th:each="item:${2}" style="border-bottom: solid 1px; width: 500px; margin: auto;">
+        <div><span></span>1、我是一道题目</div>
+        <div th:if="${true}">
+            <div><span>&emsp;A:</span></div>
+            <div><span>&emsp;B:</span></div>
+            <div><span>&emsp;C:</span></div>
+            <div><span>&emsp;D:</span></div>
+        </div>
+        <div style="margin-left: 70%;" id="yourAnswer"><span>你的答案：</span></div>
+        <div style="margin-left: 70%;"><span>正确答案：</span></div>
+        <p hidden="hidden" th:text="${'真难'}" id="isTrue"></p>
+    </div>
+</div>
+<div id="footer" style="width:100%;  position:absolute;bottom:0px;left:0px;">
+    <div class="ui container">
+        <div class="ui stackable two columns grid">
+            <div class="column">
+                <div class="ui two columns grid">
+                    <div class="column">
+                        <h3></h3>
+                    </div>
+                    <div class="column">
+                        <h3></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="right aligned column">
+                <br />
+                <br />
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script th:inline="javascript">
+    $(document).ready(function(){
+        if($('#isTrue').val() == true){
+            $('#yourAnswer').css("color","red");
+        }
+    });
+</script>
+</html>
