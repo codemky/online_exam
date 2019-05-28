@@ -1,14 +1,17 @@
 package com.qexz.controller;
 
+import com.qexz.dto.AjaxMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.UUID;
 
 /**
@@ -27,8 +30,8 @@ public class FileController {
 
     @RequestMapping(value = "/fileUpload", method = RequestMethod.POST)
     @ResponseBody
-    public void fileUplaod(@RequestParam("file") MultipartFile file,
-                           @RequestParam("contest")String contestId ) throws IOException {
+    public AjaxMsg fileUplaod(@RequestParam("file") MultipartFile file,
+                              @RequestParam("contest")String contestId, HttpServletResponse response) throws IOException {
         System.out.println("文件名“" + file.getOriginalFilename());
         System.out.println("考试ID:" + contestId);
 
@@ -42,10 +45,17 @@ public class FileController {
 //        file.transferTo(new File(path, fileName));
 
         if(file != null){
-            boolean result =  questionController.checkoutQuestions(file.getInputStream());
-            if(result)
+            StringBuffer stringBuffer =  questionController.checkoutQuestions(file.getInputStream());
+            if(stringBuffer != null && !stringBuffer.equals("") && stringBuffer.length() > 0){
+                return new AjaxMsg("-1",stringBuffer.toString());
+            }
+            else{
                 questionController.insertQuestions(file.getInputStream(), Integer.parseInt(contestId));
+                return new AjaxMsg("0","导入成功");
+            }
         }
+        else
+            return new AjaxMsg("-2","文件为空");
 
     }
 }

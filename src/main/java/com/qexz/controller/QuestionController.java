@@ -59,10 +59,11 @@ public class QuestionController {
     }
 
     //校验批量导入的题目
-    public boolean checkoutQuestions(InputStream inputStream) throws IOException {
+    public StringBuffer checkoutQuestions(InputStream inputStream) throws IOException {
         AjaxResult ajaxResult = new AjaxResult();
 //        System.out.println(filePath);
 //        InputStream inputStream = FileUtil.getResourcesFileInputStream(filePath);
+        stringBuffer.delete(0,stringBuffer.length());
         List<Object> data = EasyExcelFactory.read(inputStream, new Sheet(1, 1, QuestionModel.class));
         for (Object o:data) {
             stringBuffer.append(questionUpload.checkoutQuestion(o));
@@ -70,11 +71,11 @@ public class QuestionController {
         if (stringBuffer != null && !stringBuffer.equals("") && stringBuffer.length() > 0) {
             System.out.println("报错信息：");
             System.out.println(stringBuffer);
-            return false;
+            return stringBuffer;
         } else {
-            stringBuffer.append("校验通过");
+//            stringBuffer.append("校验通过");
             System.out.println("校验通过");
-            return true;
+            return stringBuffer;
         }
 //        inputStream.close();
 //        return new AjaxResult().setData(stringBuffer);
@@ -83,6 +84,7 @@ public class QuestionController {
     public AjaxResult insertQuestions(InputStream inputStream,int contest_id) throws IOException {
         AjaxResult ajaxResult = new AjaxResult();
 //        InputStream inputStream = FileUtil.getResourcesFileInputStream(filePath);
+        stringBuffer.delete(0,stringBuffer.length());
         List<Object> data = EasyExcelFactory.read(inputStream, new Sheet(1, 1, QuestionModel.class));
         for (Object o:data) {
             stringBuffer.append(questionUpload.insertQuestion(o,contest_id));

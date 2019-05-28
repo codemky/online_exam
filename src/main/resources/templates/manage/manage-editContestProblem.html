@@ -425,14 +425,14 @@
     // }
 
     function ajaxSubmitForm(){
-        alert(".....");
+        // alert(".....");
         var value = $("#file").val();
         if (value == null) {
             alert("请先选择文件");
             return false;
         }
-        if (!value.match(/.txt|.xlsx|.xls/i)) {
-            alert("文件格式错误");
+        if ( !value.match(/.xlsx|.xls/i) ) {
+            alert("文件格式错误，请上传xlsx或xls格式的文件");
             return false;
         }
         var option = {
@@ -443,7 +443,19 @@
                 "ClientCallMode" : "ajax"
             }, //添加请求头部
             success : function(data) {
-                alert(JSON.stringify(data));
+                // alert(JSON.stringify(data));
+                // var jsonData = JSON.parse(data);
+                if (data.result_code == 0){
+                    alert("导入成功!");
+                    location.reload();
+                }
+                if (data.result_code == -1){
+                    alert(data.msg);
+                }
+                if (data.result_code == -2){
+                    alert("上传文件为空!");
+                }
+
             },
             error : function(data) {
                 alert(JSON.stringify(data) + "--上传失败,请刷新后重试");
