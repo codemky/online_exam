@@ -17,6 +17,8 @@ public interface SubjectMapper {
 
     Subject getSubjectById(@Param("id") int id);
 
+    Subject getSubjectBySubjectName(@Param("name") String name);
+
     int getCount();
 
     List<Subject> getSubjects();

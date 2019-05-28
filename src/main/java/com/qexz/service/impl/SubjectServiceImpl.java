@@ -80,6 +80,12 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    public Subject getSubjectBySubjectName(String name) {
+        Subject subjectBySubjectName = subjectMapper.getSubjectBySubjectName(name);
+        return subjectBySubjectName;
+    }
+
+    @Override
     public boolean deleteSubjectById(int id) {
         return subjectMapper.deleteSubjectById(id) > 0;
     }

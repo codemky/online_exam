@@ -27,24 +27,35 @@ public class QuestionUpload {
     private QuestionService Qquestion;
     @Autowired
     private SubjectService Ssubject;
-    @Autowired
-    private ContestService Ccontest;
+
     private static  QuestionService questionService;
     private static  SubjectService subjectService;
-    private static  ContestService contestService;
 
     @PostConstruct
     public void init(){
         questionService = this.Qquestion;
         subjectService = this.Ssubject;
-        contestService = this.Ccontest;
         i=0;
     }
     Object o =new Object();
     StringBuffer s = new StringBuffer();
     Question question = new Question();
-    List<Subject> subjects = new ArrayList<>();
-    int i=0;
+//    List<Subject> subjects = new ArrayList<>();
+    static int i=0;
+//    int flag=0;
+
+    public static void setI(int i) {
+        QuestionUpload.i = i;
+    }
+
+    public static void setQuestionService(QuestionService questionService) {
+        QuestionUpload.questionService = questionService;
+    }
+
+    public static void setSubjectService(SubjectService subjectService) {
+        QuestionUpload.subjectService = subjectService;
+    }
+
     /**
      * Author: chenenru 11:33 2019/5/25
      * @param o
@@ -52,6 +63,7 @@ public class QuestionUpload {
      * @apiNote: 校验题目
      */
     public StringBuffer checkoutQuestion(Object o){
+        //init();
         this.o = o;
         s.delete(0, s.length());
         String questiontitle = (String) getFieldValueByName("questiontitle", o);
@@ -73,36 +85,53 @@ public class QuestionUpload {
 
         i++;
         if (questiontitle==null||questiontitle.equals("")){
-            s.append("第"+i+"行第1列不能为空，请检查");
+            s.append("第"+i+"行第1列不能为空，请检查\n");
         }
         if (questioncontent==null||questioncontent.equals("")){
-            s.append("第"+i+"行第2列不能为空，请检查");
+            s.append("第"+i+"行第2列不能为空，请检查\n");
         }
         if (questiontype==null||questiontype.equals("")){
-            s.append("第"+i+"行第3列不能为空，请检查");
+            s.append("第"+i+"行第3列不能为空，请检查\n");
         }
-        if (qurstionoptionA==null||qurstionoptionA.equals("")){
-            s.append("第"+i+"行第4列不能为空，请检查");
-        }
-        if (qurstionoptionB==null||qurstionoptionB.equals("")){
-            s.append("第"+i+"行第5列不能为空，请检查");
-        }
-        if (qurstionoptionC==null||qurstionoptionC.equals("")){
-            s.append("第"+i+"行第6列不能为空，请检查");
-        }
-        if (qurstionoptionD==null||qurstionoptionD.equals("")){
-            s.append("第"+i+"行第7列不能为空，请检查");
+        if (questiontype.equals("单项选择题")||questiontype.equals("多项选择题")){
+            if (qurstionoptionA==null||qurstionoptionA.equals("")){
+                s.append("第"+i+"行第4列不能为空，请检查\n");
+            }
+            if (qurstionoptionB==null||qurstionoptionB.equals("")){
+                s.append("第"+i+"行第5列不能为空，请检查\n");
+            }
+            if (qurstionoptionC==null||qurstionoptionC.equals("")){
+                s.append("第"+i+"行第6列不能为空，请检查\n");
+            }
+            if (qurstionoptionD==null||qurstionoptionD.equals("")){
+                s.append("第"+i+"行第7列不能为空，请检查\n");
+            }
         }
         if (questionanswer==null||questionanswer.equals("")){
-            s.append("第"+i+"行第8列不能为空，请检查");
+            s.append("第"+i+"行第8列不能为空，请检查\n");
         }
         if (questionparse==null||questionparse.equals("")){
-            s.append("第"+i+"行第9列不能为空，请检查");
+            s.append("第"+i+"行第9列不能为空，请检查\n");
         }
+
         if (questionsubject==null||questionsubject.equals("")){
-            s.append("第"+i+"行第10列不能为空，请检查");
+            s.append("第"+i+"行第10列不能为空，请检查\n");
         }
-        if (questionscore.intValue()<0||questionscore.intValue()>100){
+        else {
+            /*List<Subject> subjects = subjectService.getSubjects();
+            System.out.println("-------------->"+subjectService.getSubjects().toString());
+            for (Subject s: subjects) {
+                if (questionsubject.equals(s.getName())){
+                    flag=1;
+                    break;
+                }
+            }*/
+            Subject subjectBySubjectName = subjectService.getSubjectBySubjectName(questionsubject);
+            if (subjectBySubjectName == null ||subjectBySubjectName.equals("")) {
+                s.append("第"+i+"行第10列的课程不正确，请检查\n");
+            }
+        }
+        if (questionscore.intValue()<1||questionscore.intValue()>100){
             s.append("第"+i+"行第11列题目分值设置不正确，请检查\n");
         }
         if (questiondifficulty.intValue()<1||questiondifficulty.intValue()>5){
@@ -117,6 +146,7 @@ public class QuestionUpload {
      * @apiNote: 批量导入题目
      */
     public StringBuffer insertQuestion(Object o,int contest_id){
+        //init();
         this.o = o;
         s.delete(0, s.length());
         String questiontitle = (String) getFieldValueByName("questiontitle", o);
@@ -135,26 +165,33 @@ public class QuestionUpload {
         question.setContent(questioncontent);
         if (questiontype.equals("单项选择题")){
             question.setQuestionType(0);
+            question.setOptionA(qurstionoptionA);
+            question.setOptionB(qurstionoptionB);
+            question.setOptionC(qurstionoptionC);
+            question.setOptionD(qurstionoptionD);
+            question.setAnswer(questionanswer);
+            question.setParse(questionparse);
         }else if (questiontype.equals("多项选择题")){
             question.setQuestionType(1);
+            question.setOptionA(qurstionoptionA);
+            question.setOptionB(qurstionoptionB);
+            question.setOptionC(qurstionoptionC);
+            question.setOptionD(qurstionoptionD);
+            question.setAnswer(questionanswer);
+            question.setParse(questionparse);
         }else if (questiontype.equals("问答题")){
             question.setQuestionType(2);
         }else if (questiontype.equals("编程题")){
             question.setQuestionType(3);
         }
-        question.setOptionA(qurstionoptionA);
-        question.setOptionB(qurstionoptionB);
-        question.setOptionC(qurstionoptionC);
-        question.setOptionD(qurstionoptionD);
-        question.setAnswer(questionanswer);
-        question.setParse(questionparse);
-        questionsubject.equals("");
-        subjects = subjectService.getSubjects();
+        /*List<Subject> subjects = subjectService.getSubjects();
         for (Subject s: subjects) {
             if (s.getName().equals(questionsubject)){
                 question.setSubjectId(s.getId());
             }
-        }
+        }*/
+        Subject subjectBySubjectName = subjectService.getSubjectBySubjectName(questionsubject);
+        question.setSubjectId(subjectBySubjectName.getId());
         question.setContestId(contest_id);
         question.setCreateTime(new Date());
         question.setScore(questionscore);
@@ -162,9 +199,9 @@ public class QuestionUpload {
         question.setState(0);
         int i = questionService.addQuestion(question);
         if (i>0){
-            s.append("插入成功");
+            s.append("插入成功\n");
         }else{
-            s.append("插入失败");
+            s.append("插入失败\n");
         }
         return s;
     }

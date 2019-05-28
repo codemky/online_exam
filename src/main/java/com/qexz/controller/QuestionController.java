@@ -10,6 +10,7 @@ import com.qexz.dto.AjaxResult;
 import com.qexz.model.Contest;
 import com.qexz.model.Question;
 import com.qexz.service.QuestionService;
+import com.qexz.service.SubjectService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ public class QuestionController {
 
     @Autowired
     private QuestionService questionService;
+    @Autowired
+    private SubjectService subjectService;
 
     QuestionUpload questionUpload = new QuestionUpload();
     StringBuffer stringBuffer = new StringBuffer();
@@ -64,9 +67,10 @@ public class QuestionController {
 //        System.out.println(filePath);
 //        InputStream inputStream = FileUtil.getResourcesFileInputStream(filePath);
         stringBuffer.delete(0,stringBuffer.length());
-        questionUpload.init();
+//        questionUpload.init();
         List<Object> data = EasyExcelFactory.read(inputStream, new Sheet(1, 1, QuestionModel.class));
         for (Object o:data) {
+            QuestionUpload.setI(0);
             stringBuffer.append(questionUpload.checkoutQuestion(o));
         }
         if (stringBuffer != null && !stringBuffer.equals("") && stringBuffer.length() > 0) {
@@ -89,6 +93,9 @@ public class QuestionController {
         questionUpload.init();
         List<Object> data = EasyExcelFactory.read(inputStream, new Sheet(1, 1, QuestionModel.class));
         for (Object o:data) {
+            QuestionUpload.setI(0);
+            QuestionUpload.setQuestionService(questionService);
+            QuestionUpload.setSubjectService(subjectService);
             stringBuffer.append(questionUpload.insertQuestion(o,contest_id));
         }
         inputStream.close();

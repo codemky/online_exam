@@ -35,6 +35,13 @@
         FROM t_penguin_subject
         WHERE id = #{id}
     </select>
+
+    <select id="getSubjectBySubjectName" resultMap="BaseResultMap" parameterType="String" >
+        SELECT
+        *
+        FROM t_penguin_subject
+        WHERE name = #{name}
+    </select>
     
     <select id="getCount" resultType="int">
         SELECT
