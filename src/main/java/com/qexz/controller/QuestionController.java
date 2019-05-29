@@ -58,6 +58,7 @@ public class QuestionController {
     public AjaxResult deleteContest(@PathVariable int id) {
         AjaxResult ajaxResult = new AjaxResult();
         boolean result = questionService.deleteQuestion(id);
+        
         return new AjaxResult().setData(result);
     }
 

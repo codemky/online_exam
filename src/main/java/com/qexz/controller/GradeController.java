@@ -3,18 +3,18 @@ package com.qexz.controller;
 import com.qexz.common.QexzConst;
 import com.qexz.dto.AjaxResult;
 import com.qexz.model.Account;
+import com.qexz.model.Contest;
 import com.qexz.model.Grade;
 import com.qexz.model.Question;
+import com.qexz.service.ContestService;
 import com.qexz.service.GradeService;
 import com.qexz.service.QuestionService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -30,6 +30,8 @@ public class GradeController {
     private GradeService gradeService;
     @Autowired
     private QuestionService questionService;
+    @Autowired
+    private ContestService contestService;
 
     /**
      * Author: laizhouhao 16:33 2019/5/23
@@ -64,6 +66,20 @@ public class GradeController {
         grade.setState(1);
         int gradeId = gradeService.addGrade(grade);
         return new AjaxResult().setData(gradeId);
+    }
+
+    @RequestMapping("/contestHistory")
+    public String showContestHistory(@RequestParam("gradeId")Integer gradeId , Model model){
+        Grade grade = gradeService.getGradeById(gradeId);
+        //分割答题记录，以字符“”“”‘_~_’分割，所以QexzConst.SPLIT_CHAR的值为_~_
+        List<String> answerStrs = Arrays.asList(grade.getAnswerJson().split(QexzConst.SPLIT_CHAR));
+        List<Question> questions = questionService.getQuestionsByContestId(grade.getContestId());
+        Contest contest = contestService.getContestById(grade.getContestId());
+        model.addAttribute("answers",answerStrs);
+        model.addAttribute("questions",questions);
+        model.addAttribute("contest",contest);
+
+        return "/user/answerDetail";
     }
 
 //    //完成批改试卷

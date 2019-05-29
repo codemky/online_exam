@@ -28,16 +28,18 @@
     </a>
 </div>
 <div style="margin-top: 70px; margin-bottom: 30px;">
-    <div th:each="item:${2}" style="border-bottom: solid 1px; width: 500px; margin: auto;">
-        <div><span></span>1、我是一道题目</div>
-        <div th:if="${true}">
-            <div><span>&emsp;A:</span></div>
-            <div><span>&emsp;B:</span></div>
-            <div><span>&emsp;C:</span></div>
-            <div><span>&emsp;D:</span></div>
+    <div style="border-bottom: solid 1px; width: 500px; margin: auto;" th:each="item,itemStats : ${questions}">
+        <div><span th:text="${item.content}"></span>1、我是一道题目</div>
+        <div th:if="${item.questionType} le 1">
+            <div><span th:text="${item.content}">&emsp;A:</span></div>
+            <div><span th:text="${item.content}">&emsp;B:</span></div>
+            <div><span th:text="${item.content}">&emsp;C:</span></div>
+            <div><span th:text="${item.content}">&emsp;D:</span></div>
         </div>
-        <div style="margin-left: 70%;" id="yourAnswer"><span>你的答案：</span></div>
-        <div style="margin-left: 70%;"><span>正确答案：</span></div>
+        <div style="margin-left: 70%;" id="yourAnswer">你的答案：<span th:text="${answers[itemStats.index]}"></span></div>
+        <div style="margin-left: 70%;">正确答案：<span th:text="${item.answer}"></span></div>
+        <div style="margin-left: 70%;">题目分值：<span th:text="${item.score}"></span></div>
+        <div style="margin-left: 70%;">答案解析：<span th:text="${item.parse}"></span></div>
         <p hidden="hidden" th:text="${'真难'}" id="isTrue"></p>
     </div>
 </div>

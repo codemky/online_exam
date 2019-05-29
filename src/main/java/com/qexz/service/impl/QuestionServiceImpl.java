@@ -53,6 +53,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public List<Question> getQuestionsByContestId(int contestId) {
+
         return questionMapper.getQuestionByContestId(contestId);
     }
 
@@ -92,6 +93,9 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public boolean deleteQuestion(int id) {
+        Question question = questionMapper.getQuestionById(id);
+        Contest contest = contestMapper.getContestById(question.getContestId());
+        contest.setTotalScore(contest.getTotalScore()-question.getScore());
         return questionMapper.deleteQuestion(id) > 0;
     }
 
