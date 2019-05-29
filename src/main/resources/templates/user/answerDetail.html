@@ -17,33 +17,52 @@
         <!--<img class="ui" th:src="@{/img/logo_flat.png}" width="104" height="24" alt="" />-->
         <img class="ui" th:src="@{/img/logo.png}" width="156" height="32" alt="" />
     </a>
-    <a th:href="@{/contest/index}" href="#" class="item">
+    <a th:href="@{/contest/index}" class="item">
         <i class="desktop icon"></i>在线考试
     </a>
     <a th:href="@{/account/myExam}" class="item">
-        <i class="list layout icon"></i>答题记录
+        <i class="list layout icon"></i>考试历史
     </a>
-    <a id="logout" class="right item">
-        <i class="sign out icon"></i>退出
+    <a th:onclick="'app.showLogin()'" class="right item" th:if="${current_account == null}">
+        <i class="sign in icon"></i>登录
     </a>
-</div>
-<div style="margin-top: 70px; margin-bottom: 30px;">
-    <div style="border-bottom: solid 1px; width: 500px; margin: auto;" th:each="item,itemStats : ${questions}">
-        <div><span th:text="${item.content}"></span>1、我是一道题目</div>
-        <div th:if="${item.questionType} le 1">
-            <div><span th:text="${item.content}">&emsp;A:</span></div>
-            <div><span th:text="${item.content}">&emsp;B:</span></div>
-            <div><span th:text="${item.content}">&emsp;C:</span></div>
-            <div><span th:text="${item.content}">&emsp;D:</span></div>
+    <div class="ui simple dropdown right item" th:if="${current_account != null}">
+        <img class="ui avatar image" th:src="@{'/upload/images/'+${current_account.avatarImgUrl}}" />
+        <span th:text="${current_account.name}"></span> <i class="dropdown icon"></i>
+        <div class="menu">
+            <a class="item" th:href="@{/account/profile}">
+                <i class="user icon"></i>我的主页
+            </a>
+            <a class="item" id="logout">
+                <i class="sign out icon"></i>退出
+            </a>
         </div>
-        <div style="margin-left: 70%;" id="yourAnswer">你的答案：<span th:text="${answers[itemStats.index]}"></span></div>
-        <div style="margin-left: 70%;">正确答案：<span th:text="${item.answer}"></span></div>
-        <div style="margin-left: 70%;">题目分值：<span th:text="${item.score}"></span></div>
-        <div style="margin-left: 70%;">答案解析：<span th:text="${item.parse}"></span></div>
-        <p hidden="hidden" th:text="${'真难'}" id="isTrue"></p>
     </div>
 </div>
-<div id="footer" style="width:100%;  position:absolute;bottom:0px;left:0px;">
+<div style="margin-top: 70px;">
+    <div style="border-bottom: solid 1px; width: 700px; height: 300px; margin: auto; margin-top: 30px; margin-bottom: 30px;" th:each="item,itemStats : ${questions}">
+        <div style="font-family: 黑体;font-size: 24px; margin-bottom: 10px;"><span th:text="${itemStats.count}"></span><span>、</span><span th:text="${item.content}"></span><span style="font-size: 18px;">(分值：<span th:text="${item.score}" ></span>)</span></div>
+        <div th:if="${item.questionType} le 1">
+            <div>&emsp;&emsp;A&emsp;<span th:text="${item.content}"></span></div>
+            <div>&emsp;&emsp;B&emsp;<span th:text="${item.content}"></span></div>
+            <div>&emsp;&emsp;C&emsp;<span th:text="${item.content}"></span></div>
+            <div>&emsp;&emsp;D&emsp;<span th:text="${item.content}"></span></div>
+        </div>
+        <div th:if="${item.questionType} ne 1">
+            <div style="height: 30px;"></div>
+        </div>
+        <div th:if="${answers[itemStats.index]} eq ${item.answer}">
+            <div style="margin-left: 70%; color: green;" id="yourAnswerDiv">你的答案：<span th:text="${answers[itemStats.index]}" id="yourAnswer"></span></div>
+        </div>
+        <div th:if="${answers[itemStats.index]} ne ${item.answer}">
+            <div th:if="${answers[itemStats.index]} eq '#'" style="margin-left: 70%; color: hotpink">你没有作答^0^</div>
+            <div th:if="${answers[itemStats.index]} ne '#'" style="margin-left: 70%; color: red;" id="yourAnswerDiv">你的答案：<span th:text="${answers[itemStats.index]}" id="yourAnswer"></span></div>
+        </div>
+        <div style="margin-left: 70%; color: green;">正确答案：<span th:text="${item.answer}" id="trueAnswer"></span></div>
+        <div>答案解析：<span th:text="${item.parse}"></span></div>
+    </div>
+</div>
+<div id="footer" >
     <div class="ui container">
         <div class="ui stackable two columns grid">
             <div class="column">
@@ -65,10 +84,12 @@
 </div>
 </body>
 <script th:inline="javascript">
-    $(document).ready(function(){
-        if($('#isTrue').val() == true){
-            $('#yourAnswer').css("color","red");
+    function chechAnswer(){
+        console.log("a");
+        if($('#yourAnswer').val() != $("#trueAnswer").val() ){
+            console.log("a");
+            $('#yourAnswerDiv').css("color","red");
         }
-    });
+    }
 </script>
 </html>

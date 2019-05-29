@@ -111,6 +111,7 @@ var app = {
          * 退出登录
          */
         $('#logout').click(function (e) {
+            console.log("退出啊")
             window.location.href = app.URL.logoutUrl();
         });
         /**
