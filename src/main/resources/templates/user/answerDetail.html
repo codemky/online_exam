@@ -41,12 +41,12 @@
 </div>
 <div style="margin-top: 70px;">
     <div style="border-bottom: solid 1px; width: 700px; height: 300px; margin: auto; margin-top: 30px; margin-bottom: 30px;" th:each="item,itemStats : ${questions}">
-        <div style="font-family: 黑体;font-size: 24px; margin-bottom: 10px;"><span th:text="${itemStats.count}"></span><span>、</span><span th:text="${item.content}"></span><span style="font-size: 18px;">(分值：<span th:text="${item.score}" ></span>)</span></div>
-        <div th:if="${item.questionType} le 1">
-            <div>&emsp;&emsp;A&emsp;<span th:text="${item.content}"></span></div>
-            <div>&emsp;&emsp;B&emsp;<span th:text="${item.content}"></span></div>
-            <div>&emsp;&emsp;C&emsp;<span th:text="${item.content}"></span></div>
-            <div>&emsp;&emsp;D&emsp;<span th:text="${item.content}"></span></div>
+        <div style="font-family: 黑体;font-size: 24px; margin-bottom: 10px;"><span th:text="${itemStats.count}" style="line-height: 40px;"></span><span>、</span><span th:text="${item.content}"></span><span style="font-size: 18px;">(分值：<span th:text="${item.score}" ></span>)</span></div>
+        <div th:if="${item.questionType} le 1" style="line-height: 30px;">
+            <div>&emsp;&emsp;A&emsp;<span th:text="${item.optionA}"></span></div>
+            <div>&emsp;&emsp;B&emsp;<span th:text="${item.optionB}"></span></div>
+            <div>&emsp;&emsp;C&emsp;<span th:text="${item.optionC}"></span></div>
+            <div>&emsp;&emsp;D&emsp;<span th:text="${item.optionD}"></span></div>
         </div>
         <div th:if="${item.questionType} ne 1">
             <div style="height: 30px;"></div>
