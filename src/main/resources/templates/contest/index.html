@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8" />
-    <title>GDUFE在线考试系统</title>
+    <title>暴走在线考试系统</title>
     <link rel="stylesheet" th:href="@{https://cdn.bootcss.com/semantic-ui/2.2.13/semantic.min.css}" />
     <link rel="stylesheet" th:href="@{/css/app.css}" />
     <link rel="stylesheet" th:href="@{/css/contest/index.css}" />
@@ -22,11 +22,8 @@
     <a th:href="@{/contest/index}" href="#" class="active item">
         <i class="desktop icon"></i>在线考试
     </a>
-    <a th:href="@{/problemset/list}" class="item">
-        <i class="list layout icon"></i>题库中心
-    </a>
-    <a th:href="@{/discuss}" class="item">
-        <i class="talk icon"></i>讨论区
+    <a th:href="@{/account/myExam}" class="item">
+        <i class="list layout icon"></i>考试历史
     </a>
     <a th:onclick="'app.showLogin()'"  class="right item" th:if="${current_account == null}">
         <i class="sign in icon"></i>登录
@@ -120,27 +117,19 @@
                 <div class="ui two columns grid">
                     <div class="column">
                         <h3>项目介绍</h3>
-                        在线考试系统是一个在线测试学习系统，并用于辅助课程教学和学生学习。
+                        暴走在线考试系统，场场考试都暴走。
                     </div>
                     <div class="column">
-                        <h3>联系我们</h3>
-                        如有问题请发邮件到
-                        zzqnxx@foxmail.com
+                        <h3></h3>
                     </div>
                 </div>
             </div>
             <div class="right aligned column">
-                &copy; 2018 GDUFE All Rights Reserved &nbsp;&nbsp;
+               &nbsp;&nbsp;
                 <br />
-                网站版本：<a href="#">v1.0.0 Beta #20180109</a>&nbsp;&nbsp;
+                <a href="#"></a>&nbsp;&nbsp;
                 服务器时间：<span id="current_server_timer"></span>
                 <br />
-                站长统计 | 今日IP[91] | 今日PV[4511] | 昨日IP[133] | 昨日PV[10109] | 当前在线[1]
-                <!--
-                TODO::pv,uv统计
-                <span id='cnzz_stat_icon_1261763113'></span>
-                <script th:src='@{//s95.cnzz.com/stat.php?id=1261763113&amp;online=1&amp;show=line}' type='text/javascript'></script>
-                -->
             </div>
         </div>
     </div>

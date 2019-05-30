@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8" />
-    <title>GDUFE在线考试系统</title>
+    <title>暴走在线考试系统</title>
     <link rel="stylesheet" th:href="@{https://cdn.bootcss.com/semantic-ui/2.2.13/semantic.min.css}" />
     <link rel="stylesheet" th:href="@{https://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css}" />
     <!-- TODO::文件上传 -->
@@ -31,11 +31,8 @@
     <a th:href="@{/contest/index}" href="#" class="item">
         <i class="desktop icon"></i>在线考试
     </a>
-    <a th:href="@{/problemset/list}" class="item">
-        <i class="list layout icon"></i>题库中心
-    </a>
-    <a th:href="@{/discuss}" class="item">
-        <i class="talk icon"></i>讨论区
+    <a th:href="@{/account/myExam}" class="item">
+        <i class="list layout icon"></i>考试历史
     </a>
     <a class="right item" id="logout">
         <i class="sign out icon"></i>退出
@@ -64,7 +61,7 @@
                         <div class="meta">
                             <!--<a class="group">信息学院</a>-->
                             <div class="group">
-                                <i class="student icon"></i>信息学院
+                                <i class="student icon"></i>计算机
                             </div>
                         </div>
                         <div class="description" th:src="@{'/upload/images/'+${current_account.avatarImgUrl}}"></div>
@@ -86,12 +83,7 @@
                     </div>
                     <div class="content">
                         <a th:href="@{/account/myExam}">
-                            <i class="history icon"></i>考试记录
-                        </a>
-                    </div>
-                    <div class="content">
-                        <a th:href="@{/account/myDiscussPost}">
-                            <i class="talk icon"></i>我的发帖
+                            <i class="history icon"></i>考试历史
                         </a>
                     </div>
                 </div>
@@ -167,23 +159,20 @@
             <div class="column">
                 <div class="ui two columns grid">
                     <div class="column">
-                        <h3>项目介绍</h3>
-                        在线考试系统是一个在线测试学习系统，并用于辅助课程教学和学生学习。
+                        <h3></h3>
+                        暴走在线考试系统，场场考试都暴走。
                     </div>
                     <div class="column">
-                        <h3>联系我们</h3>
-                        如有问题请发邮件到
-                        zzqnxx@foxmail.com
+                        <h3></h3>
                     </div>
                 </div>
             </div>
             <div class="right aligned column">
-                &copy; 2018 GDUFE All Rights Reserved &nbsp;&nbsp;
+                &nbsp;&nbsp;
                 <br />
-                网站版本：<a href="#">v1.0.0 Beta #20180109</a>&nbsp;&nbsp;
-                服务器时间：<span id="current_server_timer"></span>
+                <a href="#"></a>&nbsp;&nbsp;
+                <span id="current_server_timer"></span>
                 <br />
-                站长统计 | 今日IP[91] | 今日PV[4511] | 昨日IP[133] | 昨日PV[10109] | 当前在线[1]
             </div>
         </div>
     </div>
