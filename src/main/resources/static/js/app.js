@@ -107,6 +107,15 @@ var app = {
         $('#loginModalSubmitButton').click(function (e) {
             app.checkLogin();
         });
+
+        /**
+         * 关闭注册框
+         */
+        $('#cancelRegist').click(function (e) {
+            $('#userRegistModal').modal('hide');
+        });
+
+
         /**
          * 退出登录
          */
@@ -177,6 +186,14 @@ var app = {
             app.formatTime(this.data.nowTime, "Y-M-D h:m:s");
     },
     /**
+    注册模态框
+     */
+    showRegist:function(){
+        console.log("注册");
+        $('#userRegistModal').modal('show');
+    },
+
+    /**
      * 登录模态框显示
      */
     showLogin: function() {
@@ -184,15 +201,10 @@ var app = {
         var password = $.cookie('penguinPassword');
         $('#username').val(username);
         $('#password').val(password);
+        console.log("登陆了啊");
         $('#loginModal').modal({
-            /**
-             * 必须点击相关按钮才能关闭
-             */
-            closable  : false,
-            /**
-             * 模糊背景
-             */
-            blurring: true,
+            backdrop:'false',
+            keyboard:'false'
         }).modal('show');
     },
     /**
