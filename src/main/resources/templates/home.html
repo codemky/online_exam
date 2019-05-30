@@ -244,16 +244,16 @@
             }),
             success:function(result) {
                 if (result.result_code == 0 ){
-                    alert("注册成功")
+                    alert("注册成功");
                     location.reload(true);
                 }
                 if (result.result_code == -2)
-                    alert("注册失败")
+                    alert("注册失败");
                 if (result.result_code == -1)
-                    alert("该账号已存在")
+                    alert("该账号已存在");
             },
             error:function(result){
-                alert("请求出错，请刷新页面")
+                alert("请求出错，请刷新页面");
                 console.log(result.message);
             }
         });
