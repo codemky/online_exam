@@ -1,6 +1,7 @@
 package com.qexz.controller;
 
 import com.qexz.common.QexzConst;
+import com.qexz.dto.AjaxMsg;
 import com.qexz.dto.AjaxResult;
 import com.qexz.exception.QexzWebError;
 import com.qexz.model.Account;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -83,6 +85,7 @@ public class AccountController {
             //用户未登录直接返回首页面
             return "redirect:/";
         }
+        model.addAttribute("current_account", currentAccount);
         Map<String, Object> data = gradeService.getGradesByStudentId(page, QexzConst.gradePageSize, currentAccount.getId());
         List<Grade> grades = (List<Grade>) data.get("grades");
         Set<Integer> contestIds = grades.stream().map(Grade::getContestId).collect(Collectors.toCollection(HashSet::new));
@@ -232,6 +235,9 @@ public class AccountController {
     @ResponseBody
     public Map<String,Object> uploadAvatar(HttpServletRequest request, @RequestParam("file") MultipartFile file) throws IllegalStateException, IOException{
         AjaxResult ajaxResult = new AjaxResult();
+        HttpSession session = request.getSession();
+        Account currentAccount = (Account) request.getSession().getAttribute(QexzConst.CURRENT_ACCOUNT);
+
         try {
             //原始名称
             String oldFileName = file.getOriginalFilename(); //获取上传文件的原名
@@ -239,15 +245,18 @@ public class AccountController {
             String file_path = QexzConst.UPLOAD_FILE_IMAGE_PATH;
             LOG.info("file_path = " + file_path);
             //上传图片
+            System.out.println("=======-----" + file.getOriginalFilename());
             if(file!=null && oldFileName!=null && oldFileName.length()>0){
-                //新的图片名称
-                String newFileName = UUID.randomUUID() + oldFileName.substring(oldFileName.lastIndexOf("."));
-                //新图片
-                File newFile = new File(file_path+newFileName);
-                //将内存中的数据写入磁盘
-                file.transferTo(newFile);
-                //将新图片名称返回到前端
-                ajaxResult.setData(newFileName);
+                String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+                //文件上传路径
+                String path = "D:/springboot-penguin-master/src/main/resources/static/images" ;
+                //文件名（都用UUID命名吧）
+                String fileName = UUID.randomUUID() + suffix;
+                //传入路径和文件名这两个参数
+                file.transferTo(new File(path, fileName));
+                currentAccount.setAvatarImgUrl(fileName);
+                accountService.updateAccount(currentAccount);
+                session.setAttribute(QexzConst.CURRENT_ACCOUNT,currentAccount);
             }else{
                 return AjaxResult.fixedError(QexzWebError.UPLOAD_FILE_IMAGE_NOT_QUALIFIED);
             }
@@ -321,14 +330,43 @@ public class AccountController {
         return new AjaxResult().setData(result);
     }
 
-    /**
-     * Author: laizhouhao 20:29 2019/5/28
-     * @param
-     * @return
-     * @apiNote:
-     */
-    @GetMapping("/answerDetail")
-    public String showAnswerDetail(){
-        return "/user/answerDetail";
+//    /**
+//     * Author: laizhouhao 20:29 2019/5/28
+//     * @param
+//     * @return
+//     * @apiNote:
+//     */
+//    @GetMapping("/answerDetail")
+//    public String showAnswerDetail(){
+//        return "/user/answerDetail";
+//    }
+
+    @RequestMapping(value = "/api/userRegist",method = RequestMethod.POST)
+    @ResponseBody
+    public AjaxMsg userRegist(@RequestBody Account account, HttpSession session){
+
+        Account isExistAccount = accountService.getAccountByUsername(account.getUsername());
+        //检测该用户是否已经注册
+        if(isExistAccount == null) {
+            account.setPassword(MD5.md5(QexzConst.MD5_SALT+account.getPassword()));
+            account.setAvatarImgUrl(QexzConst.DEFAULT_AVATAR_IMG_URL);
+            account.setState(0);
+            account.setLevel(0);
+            account.setDescription("");
+            account.setCreateTime(new Date());
+
+            int accountId = accountService.addAccount(account);
+            if(accountId > 0 ){
+                session.setAttribute(QexzConst.CURRENT_ACCOUNT,account);
+                return new AjaxMsg("0","注册成功!");
+            }
+            else {
+                return new AjaxMsg("-2","注册失败!");
+            }
+        }
+        else{
+            return new AjaxMsg("-1","该用户账号已存在!");
+        }
+
     }
 }

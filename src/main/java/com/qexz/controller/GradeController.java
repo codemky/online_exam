@@ -69,7 +69,14 @@ public class GradeController {
     }
 
     @RequestMapping("/contestHistory")
-    public String showContestHistory(@RequestParam("gradeId")Integer gradeId , Model model){
+    public String showContestHistory(@RequestParam("gradeId")Integer gradeId , Model model,HttpServletRequest request){
+        Account currentAccount = (Account) request.getSession().getAttribute(QexzConst.CURRENT_ACCOUNT);
+        //TODO::拦截器过滤处理
+        if (currentAccount == null) {
+            //用户未登录直接返回首页面
+            return "redirect:/";
+        }
+        model.addAttribute("current_account", currentAccount);
         Grade grade = gradeService.getGradeById(gradeId);
         //分割答题记录，以字符“”“”‘_~_’分割，所以QexzConst.SPLIT_CHAR的值为_~_
         List<String> answerStrs = Arrays.asList(grade.getAnswerJson().split(QexzConst.SPLIT_CHAR));

@@ -130,7 +130,7 @@ var manageAccountListPage = {
                     qq: qq,
                     phone: phone,
                     email: email,
-                    level: level,
+                    level: level
                 }),
                 success:function(result) {
                     if (result && result['success']) {

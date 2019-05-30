@@ -7,5 +7,6 @@ var home = {
     },
     init: function () {
 
-    },
+    }
+
 };

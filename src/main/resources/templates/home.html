@@ -26,11 +26,11 @@
     <a th:href="@{/account/myExam}" class="item">
         <i class="list layout icon"></i>考试历史
     </a>
-    <div class="right item">
+    <div class="right item" th:if="${current_account == null}" style="padding-left:5px;padding-right:10px;">
         <a class="item" data-toggle="modal" th:onclick="'app.showRegist()'">
             <i class="sign in icon" ></i>注册
         </a>
-        <a class="item" th:onclick="'app.showLogin()'" th:if="${current_account == null}">
+        <a class="item" th:onclick="'app.showLogin()'" >
             <i class="sign in icon"></i>登录
         </a>
     </div>
@@ -117,42 +117,58 @@
     </div>
 </div>
 
-<div class="ui mini modal" id="userRegistModal">
+<!--注册模态框-->
+<div class="ui mini modal" id="userRegistModal" style="top: 100px;">
     <div class="header">注册</div>
     <div class="content">
         <form class="ui form" id="registModalForm">
             <div class="ui hidden negative message" id="registModalErrorMessage">
             </div>
             <div class="field required">
-                <label>姓名</label>
-                <div class="ui left icon input">
-                    <input id="registName" type="name" />
-                    <i class="lock icon"></i>
-                </div>
-            </div>
-            <div class="field required">
                 <label>账号</label>
                 <div class="ui left icon input">
-                    <input id="registUser" type="text" placeholder="请输入账号" />
+                    <input id="Re_username" name="username" type="text" />
                     <i class="user icon"></i>
                 </div>
             </div>
             <div class="field required">
                 <label>密码</label>
                 <div class="ui left icon input">
-                    <input id="registPwd" type="password" />
+                    <input id="Re_password" name="password" type="password" />
                     <i class="lock icon"></i>
                 </div>
             </div>
-            <div class="field required">
-                <label>身份</label>
+            <div class="field ">
+                <label>姓名</label>
                 <div class="ui left icon input">
-                    <input id="registIde" th:value="学生" disabled="disabled" />
+                    <input id="Re_name" name="name" type="text" />
                     <i class="lock icon"></i>
                 </div>
             </div>
+            <div class="field ">
+                <label>QQ</label>
+                <div class="ui left icon input">
+                    <input id="Re_qq" name="qq" type="text" />
+                    <i class="lock icon"></i>
+                </div>
+            </div>
+            <div class="field ">
+                <label>手机</label>
+                <div class="ui left icon input">
+                    <input id="Re_phone" name="phone" type="text" />
+                    <i class="lock icon"></i>
+                </div>
+            </div>
+            <div class="field ">
+                <label>邮箱</label>
+                <div class="ui left icon input">
+                    <input id="Re_email" name="email" type="text" />
+                    <i class="lock icon"></i>
+                </div>
+            </div>
+
             <div class="ui button" id="cancelRegist">关闭</div>
-            <div class="ui primary button" id="comfirmRegist">注册</div>
+            <div class="ui primary button" id="comfirmRegist" onclick="registerAction()">注册</div>
         </form>
     </div>
 </div>
@@ -204,6 +220,47 @@
         home.init();
     });
     /*]]>*/
+
+    function registerAction() {
+        var name = $('#Re_name').val();
+        var username = $('#Re_username').val();
+        var password = $('#Re_password').val();
+        var qq = $('#Re_qq').val();
+        var phone = $('#Re_phone').val();
+        var email = $('#Re_email').val();
+        $.ajax({
+            url : '/account/api/userRegist',
+            type : "POST",
+            dataType: "json",
+            contentType : "application/json;charset=UTF-8",
+            <!-- 向后端传输的数据 -->
+            data : JSON.stringify({
+                name: name,
+                username: username,
+                password: password,
+                qq: qq,
+                phone: phone,
+                email: email
+            }),
+            success:function(result) {
+                if (result.result_code == 0 ){
+                    alert("注册成功")
+                    location.reload(true);
+                }
+                if (result.result_code == -2)
+                    alert("注册失败")
+                if (result.result_code == -1)
+                    alert("该账号已存在")
+            },
+            error:function(result){
+                alert("请求出错，请刷新页面")
+                console.log(result.message);
+            }
+        });
+
+    }
+
 </script>
+
 </body>
 </html>
