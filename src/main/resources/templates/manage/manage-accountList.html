@@ -88,8 +88,6 @@
     <td th:if="${item.state == 0}"><span class="label label-success">正常</span></td>
     <td th:if="${item.state == 1}"><span class="label label-danger">禁用</span></td>
     <td>
-        <button type="button" th:if="${item.state == 0}" th:onclick="'manageAccountListPage.disabledAccountAction('+${item.id}+')'" class="btn btn-danger btn-xs"><i class="fa fa-eye-slash"></i>禁用</button>
-        <button type="button" th:if="${item.state == 1}" th:onclick="'manageAccountListPage.abledAccountAction('+${item.id}+')'" class="btn btn-info btn-xs"><i class="fa fa-eye"></i>解禁</button>
         <button type="button" class="btn btn-primary btn-xs" th:onclick="'manageAccountListPage.updateAccountModalAction('+${itemStats.index}+')'"><i class="fa fa-edit"></i>编辑</button>
         <button type="button" class="btn btn-danger btn-xs" th:onclick="'manageAccountListPage.deleteAccountAction('+${item.id}+')'"><i class="fa fa-trash"></i>删除</button>
     </td>

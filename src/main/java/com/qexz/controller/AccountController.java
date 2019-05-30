@@ -109,23 +109,6 @@ public class AccountController {
     }
 
     /**
-     * 我的发帖页面
-     */
-    @RequestMapping(value="/myDiscussPost", method= RequestMethod.GET)
-    public String myDiscussPost(HttpServletRequest request, @RequestParam(value = "page", defaultValue = "1") int page, Model model) {
-        Account currentAccount = (Account) request.getSession().getAttribute(QexzConst.CURRENT_ACCOUNT);
-        //TODO::拦截器过滤处理
-        if (currentAccount == null) {
-            //用户未登录直接返回首页面
-            return "redirect:/";
-        }
-        Map<String, Object> data = postService.getPostsByAuthorId(page, QexzConst.postPageSize, currentAccount.getId());
-        model.addAttribute(QexzConst.DATA, data);
-        model.addAttribute(QexzConst.CURRENT_ACCOUNT, currentAccount);
-        return "/user/myDiscussPost";
-    }
-
-    /**
      * 更新密码
      */
     @RequestMapping(value = "/api/updatePassword", method = RequestMethod.POST)
@@ -330,17 +313,6 @@ public class AccountController {
         boolean result = accountService.abledAccount(id);
         return new AjaxResult().setData(result);
     }
-
-//    /**
-//     * Author: laizhouhao 20:29 2019/5/28
-//     * @param
-//     * @return
-//     * @apiNote:
-//     */
-//    @GetMapping("/answerDetail")
-//    public String showAnswerDetail(){
-//        return "/user/answerDetail";
-//    }
 
     @RequestMapping(value = "/api/userRegist",method = RequestMethod.POST)
     @ResponseBody
