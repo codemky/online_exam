@@ -16,6 +16,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -249,7 +250,7 @@ public class AccountController {
             if(file!=null && oldFileName!=null && oldFileName.length()>0){
                 String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
                 //文件上传路径
-                String path = "D:/springboot-penguin-master/src/main/resources/static/images" ;
+                String path = ResourceUtils.getURL("classpath:static/images").getPath() ;
                 //文件名（都用UUID命名吧）
                 String fileName = UUID.randomUUID() + suffix;
                 //传入路径和文件名这两个参数
