@@ -225,7 +225,7 @@ public class AccountController {
         request.getSession().setAttribute(QexzConst.CURRENT_ACCOUNT,null);
         String url=request.getHeader("Referer");
         LOG.info("url = " + url);
-        return "redirect:"+url;
+        return "redirect:/";
     }
 
     /**

@@ -197,18 +197,15 @@ public class ManageController {
             Map<String, Object> data = new HashMap<>();
             List<Grade> grades = gradeService.getGradesByContestId(contestId);
             Contest contest = contestService.getContestById(contestId);
-            List<Question> questions = questionService.getQuestionsByContestId(contestId);
-            List<Integer> studentIds = grades.stream().map(Grade::getStudentId).collect(Collectors.toList());
-            List<Account> students = accountService.getAccountsByStudentIds(studentIds);
-            Map<Integer, Account> id2student = students.stream().
-                    collect(Collectors.toMap(Account::getId, account -> account));
-            for (Grade grade : grades) {
-                Account student = id2student.get(grade.getStudentId());
-                grade.setStudent(student);
+            List<Account> students = new ArrayList<>();
+            for( Grade  grade : grades){
+                students.add(accountService.getAccountById(grade.getStudentId()));
             }
+
             data.put("grades", grades);
             data.put("contest", contest);
-            data.put("questions", questions);
+//            data.put("students", students);
+            model.addAttribute("students",students);
             model.addAttribute(QexzConst.DATA, data);
             return "/manage/manage-resultStudentBoard";
         }
