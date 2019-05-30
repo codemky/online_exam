@@ -27,11 +27,10 @@
         <i class="list layout icon"></i>考试历史
     </a>
     <div class="right item">
-        <a  data-toggle="modal" th:onclick="'app.showRegist()'">
-            <i class="glyphicon glyphicon-user" ></i>注册
+        <a class="item" data-toggle="modal" th:onclick="'app.showRegist()'">
+            <i class="sign in icon" ></i>注册
         </a>
-        &emsp;
-        <a th:onclick="'app.showLogin()'" th:if="${current_account == null}">
+        <a class="item" th:onclick="'app.showLogin()'" th:if="${current_account == null}">
             <i class="sign in icon"></i>登录
         </a>
     </div>
