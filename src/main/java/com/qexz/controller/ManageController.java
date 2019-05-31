@@ -81,6 +81,8 @@ public class ManageController {
     public String contestList(HttpServletRequest request,
                               @RequestParam(value = "page", defaultValue = "1") int page,
                               Model model) {
+        contestService.updateStateToStart();
+        contestService.updateStateToEnd();
         Account currentAccount = (Account) request.getSession().getAttribute(QexzConst.CURRENT_ACCOUNT);
         //TODO::处理
         //currentAccount = accountService.getAccountByUsername("admin");
@@ -170,6 +172,8 @@ public class ManageController {
             //return "redirect:/";
             return "/error/404";
         } else {
+            contestService.updateStateToStart();
+            contestService.updateStateToEnd();
             Map<String, Object> data = contestService.getContests(page, QexzConst.contestPageSize);
             List<Subject> subjects = subjectService.getSubjects();
             data.put("subjects", subjects);

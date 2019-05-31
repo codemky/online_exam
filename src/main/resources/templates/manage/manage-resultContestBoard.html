@@ -84,6 +84,7 @@
                         <td th:text="${item.subjectName}">数据库原理与应用</td>
                         <td th:if="${item.state == 0}"><span class="label label-warning">未开始</span></td>
                         <td th:if="${item.state == 1}"><span class="label label-success">进行中</span></td>
+                        <td th:if="${item.state == 2}"><span class="label label-danger">已结束</span></td>
                         <td th:if="${item.state == 3}"><span class="label label-danger">已结束</span></td>
                         <td>
                             <button type="button" class="btn btn-info btn-xs" th:onclick="'manageResultContestBoardPage.targetResultStudentBoardAction('+${item.id}+')'"><i class="fa fa-search"></i>查看成绩</button>

@@ -71,7 +71,6 @@
     <th>手机</th>
     <th>邮箱</th>
     <th>身份</th>
-    <th>状态</th>
     <th>操作</th>
     </tr>
     </thead>
@@ -85,8 +84,6 @@
     <td th:text="${item.email}"></td>
     <td th:if="${item.level == 0}"><span class="label label-info">学生</span></td>
     <td th:if="${item.level == 2}"><span class="label label-warning">管理员</span></td>
-    <td th:if="${item.state == 0}"><span class="label label-success">正常</span></td>
-    <td th:if="${item.state == 1}"><span class="label label-danger">禁用</span></td>
     <td>
         <button type="button" class="btn btn-primary btn-xs" th:onclick="'manageAccountListPage.updateAccountModalAction('+${itemStats.index}+')'"><i class="fa fa-edit"></i>编辑</button>
         <button type="button" class="btn btn-danger btn-xs" th:onclick="'manageAccountListPage.deleteAccountAction('+${item.id}+')'"><i class="fa fa-trash"></i>删除</button>
