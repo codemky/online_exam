@@ -35,6 +35,9 @@ var app = {
         updateAccountUrl: function () {
             return app.data.contextPath+"/account/api/updateAccount";
         },
+        updateManageAccountUrl: function () {
+            return app.data.contextPath+"/account/api/updateManegeAccount";
+        },
         updatePasswordUrl: function () {
             return app.data.contextPath+"/account/api/updatePassword";
         },

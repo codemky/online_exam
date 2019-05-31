@@ -147,8 +147,6 @@ public class AccountController {
     public AjaxResult updateAccount(HttpServletRequest request, HttpServletResponse response) {
         AjaxResult ajaxResult = new AjaxResult();
         try {
-            String name = request.getParameter("name");
-            String username = request.getParameter("username");
             String phone = request.getParameter("phone");
             String qq = request.getParameter("qq");
             String email = request.getParameter("email");
@@ -157,35 +155,16 @@ public class AccountController {
 
             HttpSession session = request.getSession();
             Account currentAccount = (Account) session.getAttribute(QexzConst.CURRENT_ACCOUNT);
-
-            if(username != null){
-                Account accountByUsername = accountService.getAccountByUsername(username);
-                //检查账号重复
-                if(accountByUsername != null)
-                    return AjaxResult.fixedError(QexzWebError.AREADY_EXIST_USERNAME);
-
-                currentAccount.setName(name);
-                currentAccount.setUsername(username);
-                currentAccount.setPhone(phone);
-                currentAccount.setQq(qq);
-                currentAccount.setEmail(email);
-                currentAccount.setDescription(description);
-                currentAccount.setAvatarImgUrl(avatarImgUrl);
-                ajaxResult.setSuccess(accountService.updateAccount(currentAccount));
-
+            currentAccount.setQq(qq);
+            currentAccount.setPhone(phone);
+            currentAccount.setEmail(email);
+            currentAccount.setDescription(description);
+            currentAccount.setAvatarImgUrl(avatarImgUrl);
+            boolean result = accountService.updateAccount(currentAccount);
+            if(result){
+                session.setAttribute(QexzConst.CURRENT_ACCOUNT,currentAccount);
             }
-            else{
-                currentAccount.setQq(qq);
-                currentAccount.setPhone(phone);
-                currentAccount.setEmail(email);
-                currentAccount.setDescription(description);
-                currentAccount.setAvatarImgUrl(avatarImgUrl);
-                boolean result = accountService.updateAccount(currentAccount);
-                if(result){
-                    session.setAttribute(QexzConst.CURRENT_ACCOUNT,currentAccount);
-                }
-                ajaxResult.setSuccess(result);
-            }
+            ajaxResult.setSuccess(result);
 
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
@@ -232,7 +211,8 @@ public class AccountController {
      */
     @RequestMapping(value = "/logout", method= RequestMethod.GET)
     public String logout(HttpServletRequest request) {
-        request.getSession().setAttribute(QexzConst.CURRENT_ACCOUNT,null);
+//        request.getSession().setAttribute(QexzConst.CURRENT_ACCOUNT,null);
+        request.getSession().invalidate();
         String url=request.getHeader("Referer");
         LOG.info("url = " + url);
         return "redirect:/";
@@ -302,6 +282,11 @@ public class AccountController {
     @ResponseBody
     public AjaxResult updateAccount(@RequestBody Account account) {
         AjaxResult ajaxResult = new AjaxResult();
+        Account accountByUsername = accountService.getAccountByUsername(account.getUsername());
+        if(accountService.getAccountByUsername(account.getUsername()) != null){
+            return AjaxResult.fixedError(QexzWebError.AREADY_EXIST_USERNAME);
+        }
+
         account.setPassword(MD5.md5(QexzConst.MD5_SALT+account.getPassword()));
         boolean result = accountService.updateAccount(account);
         return new AjaxResult().setData(result);
@@ -342,7 +327,7 @@ public class AccountController {
 
                int accountId = accountService.addAccount(account);
                if(accountId > 0 ){
-                   session.setAttribute(QexzConst.CURRENT_ACCOUNT,account);
+                   session.setAttribute(QexzConst.CURRENT_ACCOUNT,accountService.getAccountByUsername(account.getUsername()));
                    return new AjaxMsg("0","注册成功!");
                }
                else {

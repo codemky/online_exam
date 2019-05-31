@@ -190,7 +190,7 @@ var manageAccountListPage = {
 
         if (manageAccountListPage.checkUpdateAccountData(username, phone, qq, password)) {
             $.ajax({
-                url : app.URL.updateAccountUrl(),
+                url : app.URL.updateManageAccountUrl(),
                 type : "POST",
                 dataType: "json",
                 contentType : "application/json;charset=UTF-8",
@@ -203,7 +203,7 @@ var manageAccountListPage = {
                     qq: qq,
                     phone: phone,
                     email: email,
-                    level: level,
+                    level: level
                 }),
                 success:function(result) {
                     if (result && result['success']) {
@@ -237,45 +237,6 @@ var manageAccountListPage = {
                 console.log(result.message);
             }
         });
-    },
-    disabledAccountAction: function (index) {
-        $.ajax({
-            url : app.URL.disabledAccountUrl()+index,
-            type : "POST",
-            dataType: "json",
-            contentType : "application/json;charset=UTF-8",
-            success:function(result) {
-                if (result && result['success']) {
-                    // 验证通过 刷新页面
-                    window.location.reload();
-                } else {
-                    console.log(result.message);
-                }
-            },
-            error:function(result){
-                console.log(result.message);
-            }
-        });
-    },
-    abledAccountAction: function (index) {
-        $.ajax({
-            url : app.URL.abledAccountUrl()+index,
-            type : "POST",
-            dataType: "json",
-            contentType : "application/json;charset=UTF-8",
-            success:function(result) {
-                if (result && result['success']) {
-                    // 验证通过 刷新页面
-                    window.location.reload();
-                } else {
-                    console.log(result.message);
-                }
-            },
-            error:function(result){
-                console.log(result.message);
-            }
-        });
-    },
-
+    }
 
 };

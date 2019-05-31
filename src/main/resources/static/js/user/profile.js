@@ -76,7 +76,7 @@ var profilePage = {
         var email = $('#myEmail').val();
         var description = $('#myDescription').val();
         var avatarImgUrl = $('#image').val();
-        alert(avatarImgUrl);
+        // alert(avatarImgUrl);
         if (avatarImgUrl == '#') {
             avatarImgUrl = 'headimg_placeholder.png';
         }
