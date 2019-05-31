@@ -344,28 +344,37 @@ public class AccountController {
     @ResponseBody
     public AjaxMsg userRegist(@RequestBody Account account, HttpSession session){
 
-        Account isExistAccount = accountService.getAccountByUsername(account.getUsername());
-        //检测该用户是否已经注册
-        if(isExistAccount == null) {
-            account.setPassword(MD5.md5(QexzConst.MD5_SALT+account.getPassword()));
-            account.setAvatarImgUrl(QexzConst.DEFAULT_AVATAR_IMG_URL);
-            account.setState(0);
-            account.setLevel(0);
-            account.setDescription("");
-            account.setCreateTime(new Date());
+       if(account.getName().equals("") || account.getUsername().equals("") || account.getPassword().equals("")){
+           return new AjaxMsg("-3","注册失败!");
+       }
+       else {
+           Account isExistAccount = accountService.getAccountByUsername(account.getUsername());
 
-            int accountId = accountService.addAccount(account);
-            if(accountId > 0 ){
-                session.setAttribute(QexzConst.CURRENT_ACCOUNT,account);
-                return new AjaxMsg("0","注册成功!");
-            }
-            else {
-                return new AjaxMsg("-2","注册失败!");
-            }
-        }
-        else{
-            return new AjaxMsg("-1","该用户账号已存在!");
-        }
+           System.out.println(account.toString());
+
+           //检测该用户是否已经注册
+           if(isExistAccount == null) {
+               account.setPassword(MD5.md5(QexzConst.MD5_SALT+account.getPassword()));
+               account.setAvatarImgUrl(QexzConst.DEFAULT_AVATAR_IMG_URL);
+               account.setState(0);
+               account.setLevel(0);
+               account.setDescription("");
+               account.setCreateTime(new Date());
+               account.setAvatarImgUrl("headimg_placeholder.png");
+
+               int accountId = accountService.addAccount(account);
+               if(accountId > 0 ){
+                   session.setAttribute(QexzConst.CURRENT_ACCOUNT,account);
+                   return new AjaxMsg("0","注册成功!");
+               }
+               else {
+                   return new AjaxMsg("-2","注册失败!");
+               }
+           }
+           else{
+               return new AjaxMsg("-1","该用户账号已存在!");
+           }
+       }
 
     }
 }

@@ -101,6 +101,12 @@ public class DefaultController {
                                @PathVariable("contestId") int contestId,
                                Model model) {
         Account currentAccount = (Account) request.getSession().getAttribute(QexzConst.CURRENT_ACCOUNT);
+        List<Grade> gradesByContestId = gradeService.getGradesByContestId(contestId);
+        //检验考生是否已考试，进行拦截
+        for(Grade grade : gradesByContestId)
+            if(grade.getStudentId() == currentAccount.getId())
+                return "redirect:/contest/index";
+
         model.addAttribute(QexzConst.CURRENT_ACCOUNT, currentAccount);
         Contest contest = contestService.getContestById(contestId);
         if (currentAccount == null || contest.getStartTime().getTime() > System.currentTimeMillis()

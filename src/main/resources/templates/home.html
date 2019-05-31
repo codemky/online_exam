@@ -250,6 +250,8 @@
                     alert("注册失败");
                 if (result.result_code == -1)
                     alert("该账号已存在");
+                if (result.result_code == -3)
+                    alert("姓名，用户名和密码都不能有空值!");
             },
             error:function(result){
                 alert("请求出错，请刷新页面");
