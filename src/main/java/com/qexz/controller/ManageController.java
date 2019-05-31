@@ -125,39 +125,6 @@ public class ManageController {
     }
 
     /**
-     * 題目管理
-     */
-    @RequestMapping(value="/question/list", method= RequestMethod.GET)
-    public String questionList(HttpServletRequest request,
-                               @RequestParam(value = "page", defaultValue = "1") int page,
-                               @RequestParam(value = "content", defaultValue = "") String content,
-                               Model model) {
-        Account currentAccount = (Account) request.getSession().getAttribute(QexzConst.CURRENT_ACCOUNT);
-        //TODO::处理
-        //currentAccount = accountService.getAccountByUsername("admin");
-        model.addAttribute(QexzConst.CURRENT_ACCOUNT, currentAccount);
-        if (currentAccount == null || currentAccount.getLevel() < 1) {
-            //return "redirect:/";
-            return "/error/404";
-        } else {
-            Map<String, Object> data = questionService.getQuestionsByContent(page,
-                    QexzConst.questionPageSize, content);
-            List<Question> questions = (List<Question>) data.get("questions");
-            List<Subject> subjects = subjectService.getSubjects();
-            Map<Integer, String> subjectId2name = subjects.stream().
-                    collect(Collectors.toMap(Subject::getId, Subject::getName));
-            for (Question question : questions) {
-                question.setSubjectName(subjectId2name.
-                        getOrDefault(question.getSubjectId(), "未知科目"));
-            }
-            data.put("subjects", subjects);
-            data.put("content", content);
-            model.addAttribute("data", data);
-            return "/manage/manage-questionBoard";
-        }
-    }
-
-    /**
      * 成绩管理-考试列表
      */
     @RequestMapping(value="/result/contest/list", method= RequestMethod.GET)
@@ -236,62 +203,5 @@ public class ManageController {
         }
     }
 
-    /**
-     * 帖子管理
-     */
-    @RequestMapping(value="/post/list", method= RequestMethod.GET)
-    public String postList(HttpServletRequest request,
-                              @RequestParam(value = "page", defaultValue = "1") int page,
-                              Model model) {
-        Account currentAccount = (Account) request.getSession().getAttribute(QexzConst.CURRENT_ACCOUNT);
-        //TODO::处理
-        //currentAccount = accountService.getAccountByUsername("admin");
-        model.addAttribute(QexzConst.CURRENT_ACCOUNT, currentAccount);
-        if (currentAccount == null || currentAccount.getLevel() < 1) {
-            //return "redirect:/";
-            return "/error/404";
-        } else {
-            Map<String, Object> data = postService.getPosts(page, QexzConst.postPageSize);
-            List<Post> posts = (List<Post>) data.get("posts");
-            Set<Integer> authorIds = posts.stream().map(Post::getAuthorId).collect(Collectors.toCollection(HashSet::new));
-            List<Account> authors = accountService.getAccountsByIds(authorIds);
-            Map<Integer, Account> id2author = authors.stream().
-                    collect(Collectors.toMap(Account::getId, account -> account));
-            for (Post post : posts) {
-                post.setAuthor(id2author.get(post.getAuthorId()));
-            }
-            model.addAttribute(QexzConst.DATA, data);
-            return "/manage/manage-postBoard";
-        }
-    }
-
-    /**
-     * 评论管理
-     */
-    @RequestMapping(value="/comment/list", method= RequestMethod.GET)
-    public String commentList(HttpServletRequest request,
-                           @RequestParam(value = "page", defaultValue = "1") int page,
-                           Model model) {
-        Account currentAccount = (Account) request.getSession().getAttribute(QexzConst.CURRENT_ACCOUNT);
-        //TODO::处理
-        //currentAccount = accountService.getAccountByUsername("admin");
-        model.addAttribute(QexzConst.CURRENT_ACCOUNT, currentAccount);
-        if (currentAccount == null || currentAccount.getLevel() < 1) {
-            //return "redirect:/";
-            return "/error/404";
-        } else {
-            Map<String, Object> data = commentService.getComments(page, QexzConst.commentPageSize);
-            List<Comment> comments = (List<Comment>) data.get("comments");
-            Set<Integer> userIds = comments.stream().map(Comment::getUserId).collect(Collectors.toCollection(HashSet::new));
-            List<Account> users = accountService.getAccountsByIds(userIds);
-            Map<Integer, Account> id2user = users.stream().
-                    collect(Collectors.toMap(Account::getId, account -> account));
-            for (Comment comment : comments) {
-                comment.setUser(id2user.get(comment.getUserId()));
-            }
-            model.addAttribute(QexzConst.DATA, data);
-            return "/manage/manage-commentBoard";
-        }
-    }
 
 }

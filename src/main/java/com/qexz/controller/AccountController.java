@@ -318,28 +318,6 @@ public class AccountController {
         return new AjaxResult().setData(result);
     }
 
-    /**
-     * API:禁用账号
-     */
-    @RequestMapping(value="/api/disabledAccount/{id}", method= RequestMethod.POST)
-    @ResponseBody
-    public AjaxResult disabledAccount(@PathVariable int id) {
-        AjaxResult ajaxResult = new AjaxResult();
-        boolean result = accountService.disabledAccount(id);
-        return new AjaxResult().setData(result);
-    }
-
-    /**
-     * API:解禁账号
-     */
-    @RequestMapping(value="/api/abledAccount/{id}", method= RequestMethod.POST)
-    @ResponseBody
-    public AjaxResult abledAccount(@PathVariable int id) {
-        AjaxResult ajaxResult = new AjaxResult();
-        boolean result = accountService.abledAccount(id);
-        return new AjaxResult().setData(result);
-    }
-
     @RequestMapping(value = "/api/userRegist",method = RequestMethod.POST)
     @ResponseBody
     public AjaxMsg userRegist(@RequestBody Account account, HttpSession session){
