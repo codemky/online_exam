@@ -12,6 +12,8 @@ public interface AccountService {
 
     boolean updateAccount(Account account);
 
+    boolean manageUpdate(Account account);
+
     boolean updateAvatarImgUrlById(String avatarImgUrl, int id);
 
     Account getAccountByUsername(String username);

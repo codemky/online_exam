@@ -115,6 +115,7 @@ var manageAccountListPage = {
         var phone = $('#addPhone').val();
         var email = $('#addEmail').val();
         var level = $('#addLevel').val();
+        var avatarImgUrl = 'headimg_placeholder.png';
 
         if (manageAccountListPage.checkAddAccountData(name, username, password, qq, phone, email)) {
             $.ajax({
@@ -130,7 +131,8 @@ var manageAccountListPage = {
                     qq: qq,
                     phone: phone,
                     email: email,
-                    level: level
+                    level: level,
+                    avatarImgUrl : avatarImgUrl
                 }),
                 success:function(result) {
                     if (result && result['success']) {
@@ -188,9 +190,10 @@ var manageAccountListPage = {
         var email = $('#updateEmail').val();
         var level = $('#updateLevel').val();
 
+
         if (manageAccountListPage.checkUpdateAccountData(username, phone, qq, password)) {
             $.ajax({
-                url : app.URL.updateManageAccountUrl(),
+                url : app.URL.updateAccountUrl(),
                 type : "POST",
                 dataType: "json",
                 contentType : "application/json;charset=UTF-8",
@@ -211,10 +214,12 @@ var manageAccountListPage = {
                         window.location.reload();
                     } else {
                         console.log(result.message);
+                        window.location.reload();
                     }
                 },
                 error:function(result){
                     console.log(result.message);
+                    window.location.reload();
                 }
             });
         }

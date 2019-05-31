@@ -48,7 +48,7 @@ public class ManageController {
         model.addAttribute(QexzConst.CURRENT_ACCOUNT, currentAccount);
 
         if (currentAccount == null) {
-            return "/manage/manage-login";
+            return "manage/manage-login";
         } else {
             return "redirect:/manage/contest/list";
         }
@@ -66,11 +66,11 @@ public class ManageController {
         //currentAccount = accountService.getAccountByUsername("admin");
         model.addAttribute(QexzConst.CURRENT_ACCOUNT, currentAccount);
         if (currentAccount == null || currentAccount.getLevel() < 1) {
-            return "/error/404";
+            return "error/404";
         } else {
             Map<String, Object> data = accountService.getAccounts(page, QexzConst.accountPageSize);
             model.addAttribute(QexzConst.DATA, data);
-            return "/manage/manage-accountList";
+            return "manage/manage-accountList";
         }
     }
 
@@ -81,6 +81,7 @@ public class ManageController {
     public String contestList(HttpServletRequest request,
                               @RequestParam(value = "page", defaultValue = "1") int page,
                               Model model) {
+        contestService.updateStateToReady();
         contestService.updateStateToStart();
         contestService.updateStateToEnd();
         Account currentAccount = (Account) request.getSession().getAttribute(QexzConst.CURRENT_ACCOUNT);
@@ -89,13 +90,13 @@ public class ManageController {
         model.addAttribute(QexzConst.CURRENT_ACCOUNT, currentAccount);
         if (currentAccount == null || currentAccount.getLevel() < 1) {
             //return "redirect:/";
-            return "/error/404";
+            return "error/404";
         } else {
             Map<String, Object> data = contestService.getContests(page, QexzConst.contestPageSize);
             List<Subject> subjects = subjectService.getSubjects();
             data.put("subjects", subjects);
             model.addAttribute(QexzConst.DATA, data);
-            return "/manage/manage-contestBoard";
+            return "manage/manage-contestBoard";
         }
     }
 
@@ -111,7 +112,7 @@ public class ManageController {
         model.addAttribute(QexzConst.CURRENT_ACCOUNT, currentAccount);
         if (currentAccount == null || currentAccount.getLevel() < 1) {
             //return "redirect:/";
-            return "/error/404";
+            return "error/404";
         } else {
             Map<String, Object> data = new HashMap<>();
             List<Question> questions = questionService.getQuestionsByContestId(contestId);
@@ -120,7 +121,7 @@ public class ManageController {
             data.put("questions", questions);
             data.put("contest", contest);
             model.addAttribute(QexzConst.DATA, data);
-            return "/manage/manage-editContestProblem";
+            return "manage/manage-editContestProblem";
         }
     }
 
@@ -137,15 +138,16 @@ public class ManageController {
         model.addAttribute(QexzConst.CURRENT_ACCOUNT, currentAccount);
         if (currentAccount == null || currentAccount.getLevel() < 1) {
             //return "redirect:/";
-            return "/error/404";
+            return "error/404";
         } else {
+            contestService.updateStateToReady();
             contestService.updateStateToStart();
             contestService.updateStateToEnd();
             Map<String, Object> data = contestService.getContests(page, QexzConst.contestPageSize);
             List<Subject> subjects = subjectService.getSubjects();
             data.put("subjects", subjects);
             model.addAttribute(QexzConst.DATA, data);
-            return "/manage/manage-resultContestBoard";
+            return "manage/manage-resultContestBoard";
         }
     }
 
@@ -163,7 +165,7 @@ public class ManageController {
         model.addAttribute(QexzConst.CURRENT_ACCOUNT, currentAccount);
         if (currentAccount == null || currentAccount.getLevel() < 1) {
             //return "redirect:/";
-            return "/error/404";
+            return "error/404";
         } else {
             Map<String, Object> data = new HashMap<>();
             List<Grade> grades = gradeService.getGradesByContestId(contestId);
@@ -178,7 +180,7 @@ public class ManageController {
 //            data.put("students", students);
             model.addAttribute("students",students);
             model.addAttribute(QexzConst.DATA, data);
-            return "/manage/manage-resultStudentBoard";
+            return "manage/manage-resultStudentBoard";
         }
     }
 
@@ -195,11 +197,11 @@ public class ManageController {
         model.addAttribute(QexzConst.CURRENT_ACCOUNT, currentAccount);
         if (currentAccount == null || currentAccount.getLevel() < 1) {
             //return "redirect:/";
-            return "/error/404";
+            return "error/404";
         } else {
             Map<String, Object> data = subjectService.getSubjects(page, QexzConst.subjectPageSize);
             model.addAttribute(QexzConst.DATA, data);
-            return "/manage/manage-subjectBoard";
+            return "manage/manage-subjectBoard";
         }
     }
 

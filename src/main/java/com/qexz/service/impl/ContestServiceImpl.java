@@ -98,6 +98,11 @@ public class ContestServiceImpl implements ContestService{
     }
 
     @Override
+    public boolean updateStateToReady() {
+        return contestMapper.updateStateToReady(new Date()) > 0;
+    }
+
+    @Override
     public List<Contest> getContestsByContestIds(Set<Integer> contestIds) {
         return contestMapper.getContestsByContestIds(contestIds);
     }

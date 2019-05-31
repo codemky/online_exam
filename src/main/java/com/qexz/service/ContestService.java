@@ -24,5 +24,7 @@ public interface ContestService {
 
     boolean updateStateToEnd();
 
+    boolean updateStateToReady();
+
     List<Contest> getContestsByContestIds(Set<Integer> contestIds);
 }

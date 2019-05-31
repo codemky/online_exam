@@ -25,6 +25,8 @@ public interface ContestMapper {
 
     int deleteContest(@Param("id") int id);
 
+    int updateStateToReady(@Param("currentTime") Date currentTime);
+
     int updateStateToStart(@Param("currentTime") Date currentTime);
 
     int updateStateToEnd(@Param("currentTime") Date currentTime);

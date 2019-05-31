@@ -38,6 +38,17 @@
         id = #{account.id}
     </update>
 
+    <update id="updateAccount" parameterType="com.qexz.model.Account">
+        UPDATE t_penguin_account
+        SET
+        password = #{account.password}, qq = #{account.qq}, phone = #{account.phone},
+        email = #{account.email}, description = #{account.description},
+        avatar_img_url = #{account.avatarImgUrl},
+        name = #{account.name}, username = #{account.username}
+        WHERE
+        id = #{account.id}
+    </update>
+
     <update id="updateAvatarImgUrlById">
         UPDATE t_penguin_account
         SET

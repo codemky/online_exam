@@ -18,7 +18,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping(value = "/")
 public class DefaultController {
 
     private static Log LOG = LogFactory.getLog(DefaultController.class);
@@ -47,7 +46,7 @@ public class DefaultController {
     public String home(HttpServletRequest request, Model model) {
         Account currentAccount = (Account) request.getSession().getAttribute(QexzConst.CURRENT_ACCOUNT);
         model.addAttribute(QexzConst.CURRENT_ACCOUNT, currentAccount);
-        return "/home";
+        return "home";
     }
 
     /**
@@ -57,6 +56,7 @@ public class DefaultController {
     public String contestIndex(HttpServletRequest request,
                                @RequestParam(value = "page", defaultValue = "1") int page,
                                Model model) {
+        contestService.updateStateToReady();
         contestService.updateStateToStart();
         contestService.updateStateToEnd();
         Account currentAccount = (Account) request.getSession().getAttribute(QexzConst.CURRENT_ACCOUNT);
@@ -90,7 +90,7 @@ public class DefaultController {
             model.addAttribute("commit",existCommit);
             model.addAttribute("fuck",integers);
         }
-        return "/contest/index";
+        return "contest/index";
     }
 
     /**
@@ -121,7 +121,7 @@ public class DefaultController {
         data.put("contest", contest);
         data.put("questions", questions);
         model.addAttribute(QexzConst.DATA, data);
-        return "/contest/detail";
+        return "contest/detail";
     }
 
     /**

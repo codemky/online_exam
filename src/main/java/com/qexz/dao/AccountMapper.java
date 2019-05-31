@@ -16,6 +16,8 @@ public interface AccountMapper {
 
     int updateAccountById(@Param("account") Account account);
 
+    int updateAccount(@Param("account") Account account);
+
     int updateAvatarImgUrlById(@Param("avatarImgUrl") String avatarImgUrl, @Param("id") int id);
 
     Account getAccountByUsername(@Param("username") String username);

@@ -57,7 +57,7 @@ public class AccountController {
             return "redirect:/";
         }
         model.addAttribute(QexzConst.CURRENT_ACCOUNT, currentAccount);
-        return "/user/profile";
+        return "user/profile";
     }
 
     /**
@@ -72,7 +72,7 @@ public class AccountController {
             return "redirect:/";
         }
         model.addAttribute(QexzConst.CURRENT_ACCOUNT, currentAccount);
-        return "/user/password";
+        return "user/password";
     }
 
     /**
@@ -105,7 +105,7 @@ public class AccountController {
         }
         model.addAttribute(QexzConst.DATA, data);
         model.addAttribute(QexzConst.CURRENT_ACCOUNT, currentAccount);
-        return "/user/myExam";
+        return "user/myExam";
     }
 
     /**
@@ -282,13 +282,12 @@ public class AccountController {
     @ResponseBody
     public AjaxResult updateAccount(@RequestBody Account account) {
         AjaxResult ajaxResult = new AjaxResult();
-        Account accountByUsername = accountService.getAccountByUsername(account.getUsername());
-        if(accountService.getAccountByUsername(account.getUsername()) != null){
-            return AjaxResult.fixedError(QexzWebError.AREADY_EXIST_USERNAME);
-        }
+        System.out.println(account.toString());
+        Account accountByUsername = accountService.getAccountById(account.getId());
+        account.setAvatarImgUrl(accountByUsername.getAvatarImgUrl());
 
         account.setPassword(MD5.md5(QexzConst.MD5_SALT+account.getPassword()));
-        boolean result = accountService.updateAccount(account);
+        boolean result = accountService.manageUpdate(account);
         return new AjaxResult().setData(result);
     }
 

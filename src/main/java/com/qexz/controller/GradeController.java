@@ -86,7 +86,7 @@ public class GradeController {
         model.addAttribute("questions",questions);
         model.addAttribute("contest",contest);
 
-        return "/user/answerDetail";
+        return "user/answerDetail";
     }
 
 //    //完成批改试卷

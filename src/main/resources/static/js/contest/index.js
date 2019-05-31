@@ -20,17 +20,19 @@ var contestIndexPage = {
 
         //考试倒计时
         var killTime = new Date();
+
+        killTime = new Date(contests[0].startTime);
         //killTime.setDate(killTime.getDate()+5);
-        for (var i = 0; i < contests.length; i++) {
-            if (contests[i].state == 0) {
-                killTime = new Date(contests[i].startTime);
-            } else {
-                break;
-            }
-        }
+        // for (var i = contests.length - 1 ; i >= 0; i--) {
+        //     if (contests[i].state == 0) {
+        //         killTime = new Date(contests[i].startTime);
+        //     } else {
+        //         break;
+        //     }
+        // }
         $("#contest-time-countdown").countdown(killTime, function (event) {
             // 事件格式
-            var format = event.strftime("考试倒计时: %D天 %H时 %M分 %S秒");
+            var format = event.strftime("离最近的一场考试还差: %D天 %H时 %M分 %S秒");
             console.log(format);
             $("#contest-time-countdown").html(format);
         }).on('finish.countdown', function () {

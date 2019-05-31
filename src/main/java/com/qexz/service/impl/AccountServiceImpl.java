@@ -17,6 +17,11 @@ public class AccountServiceImpl implements AccountService {
     private AccountMapper accountMapper;
 
     @Override
+    public boolean manageUpdate(Account account) {
+        return accountMapper.updateAccount(account) > 0 ;
+    }
+
+    @Override
     public int addAccount(Account account) {
         account.setAvatarImgUrl(QexzConst.DEFAULT_AVATAR_IMG_URL);
         return accountMapper.insertAccount(account);
