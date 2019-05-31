@@ -147,20 +147,46 @@ public class AccountController {
     public AjaxResult updateAccount(HttpServletRequest request, HttpServletResponse response) {
         AjaxResult ajaxResult = new AjaxResult();
         try {
+            String name = request.getParameter("name");
+            String username = request.getParameter("username");
             String phone = request.getParameter("phone");
             String qq = request.getParameter("qq");
             String email = request.getParameter("email");
             String description = request.getParameter("description");
             String avatarImgUrl = request.getParameter("avatarImgUrl");
 
-            Account currentAccount = (Account) request.getSession().getAttribute(QexzConst.CURRENT_ACCOUNT);
-            currentAccount.setPhone(phone);
-            currentAccount.setQq(qq);
-            currentAccount.setEmail(email);
-            currentAccount.setDescription(description);
-            currentAccount.setAvatarImgUrl(avatarImgUrl);
-            boolean result = accountService.updateAccount(currentAccount);
-            ajaxResult.setSuccess(result);
+            HttpSession session = request.getSession();
+            Account currentAccount = (Account) session.getAttribute(QexzConst.CURRENT_ACCOUNT);
+
+            if(username != null){
+                Account accountByUsername = accountService.getAccountByUsername(username);
+                //检查账号重复
+                if(accountByUsername != null)
+                    return AjaxResult.fixedError(QexzWebError.AREADY_EXIST_USERNAME);
+
+                currentAccount.setName(name);
+                currentAccount.setUsername(username);
+                currentAccount.setPhone(phone);
+                currentAccount.setQq(qq);
+                currentAccount.setEmail(email);
+                currentAccount.setDescription(description);
+                currentAccount.setAvatarImgUrl(avatarImgUrl);
+                ajaxResult.setSuccess(accountService.updateAccount(currentAccount));
+
+            }
+            else{
+                currentAccount.setQq(qq);
+                currentAccount.setPhone(phone);
+                currentAccount.setEmail(email);
+                currentAccount.setDescription(description);
+                currentAccount.setAvatarImgUrl(avatarImgUrl);
+                boolean result = accountService.updateAccount(currentAccount);
+                if(result){
+                    session.setAttribute(QexzConst.CURRENT_ACCOUNT,currentAccount);
+                }
+                ajaxResult.setSuccess(result);
+            }
+
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
             return AjaxResult.fixedError(QexzWebError.COMMON);

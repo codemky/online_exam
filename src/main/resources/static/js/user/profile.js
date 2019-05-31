@@ -75,9 +75,9 @@ var profilePage = {
         var qq = $('#myQq').val();
         var email = $('#myEmail').val();
         var description = $('#myDescription').val();
-        var avatarImgUrl = $('#myAvatarImgUrl').val();
-        if (avatarImgUrl == null || avatarImgUrl == ''
-            || avatarImgUrl.replace(/(^s*)|(s*$)/g, "").length == 0) {
+        var avatarImgUrl = $('#image').val();
+        alert(avatarImgUrl);
+        if (avatarImgUrl == '#') {
             avatarImgUrl = 'headimg_placeholder.png';
         }
         if (profilePage.checkProfile(phone, qq, email, description, avatarImgUrl)) {

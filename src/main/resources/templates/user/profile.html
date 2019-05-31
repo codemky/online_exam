@@ -55,6 +55,7 @@
                             </div>
                         </div>
                         <img th:src="'/images/'+${current_account.avatarImgUrl}" />
+                        <input type="hidden" value="${current_account.avatarImgUrl}" id="ImgUrl" />
                     </div>
                     <div class="content">
                         <div class="header" th:text="${current_account.name}"></div>
@@ -137,7 +138,8 @@
                             </div>
                         </div>
                         <input type="file" id="myfile" name="myfile" value="" onchange="profilePage.uploadAvatar()"/>
-                        <input type="hidden" id="myAvatarImgUrl" name="myAvatarImgUrl" value="" />
+                        <input type="hidden" id="image" th:value="${current_account.avatarImgUrl}" th:if="${current_account.avatarImgUrl} ne 'headimg_placeholder.png'" />
+                        <input type="hidden" id="image" value="#" th:if="${current_account.avatarImgUrl} eq 'headimg_placeholder.png'" />
                     </div>
                     <div class="field">
                         <label><i class="smile icon"></i>自我描述</label>
