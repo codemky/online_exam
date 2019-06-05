@@ -65,7 +65,7 @@
                                 <i class="student icon"></i>计算机
                             </div>
                         </div>
-                        <div class="description" th:src="@{'/upload/images/'+${current_account.avatarImgUrl}}"></div>
+                        <div class="description" th:text="${current_account.description}"></div>
                     </div>
                 </div>
             </div>

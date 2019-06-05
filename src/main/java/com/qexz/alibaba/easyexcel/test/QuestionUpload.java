@@ -94,7 +94,7 @@ public class QuestionUpload {
         if (questiontype==null||questiontype.equals("")){
             s.append("第"+i+"行第3列不能为空，请检查\n");
         }else if (!questiontype.equals("单项选择题")&&!questiontype.equals("多项选择题")
-                &&!questiontype.equals("问答题")&&!questiontype.equals("编程题")){
+                &&!questiontype.equals("填空题")&&!questiontype.equals("编程题")){
             s.append("第"+i+"行第3列题目类型设置不正确，请检查\n");
         }
         if (questiontype.equals("单项选择题")||questiontype.equals("多项选择题")){
@@ -112,7 +112,7 @@ public class QuestionUpload {
             }
         }
         if (questionanswer==null||questionanswer.equals("")){
-            s.append("第"+i+"行第8列不能为空，请检查\n");
+            s.append("第"+i+"行第8列的答案不能为空，请检查\n");
         }else if (questiontype.equals("单项选择题")||questiontype.equals("多项选择题")){
             questionanswer = questionanswer.toUpperCase();
             //System.out.println("------->"+questionanswer);
@@ -145,10 +145,15 @@ public class QuestionUpload {
                 s.append("第"+i+"行第10列的课程不正确，请检查\n");
             }
         }
-        if (questionscore.intValue()<1||questionscore.intValue()>100){
+        if(questionscore==null||questionscore.equals("")){
+            s.append("第"+i+"行第11列的题目分值不能为空，请检查\n");
+        }else if (questionscore.intValue()<1||questionscore.intValue()>100){
             s.append("第"+i+"行第11列题目分值设置不正确，请检查\n");
         }
-        if (questiondifficulty.intValue()<1||questiondifficulty.intValue()>5){
+
+        if (questiondifficulty==null||questiondifficulty.equals("")){
+            s.append("第"+i+"行第12列的难度系数不能为空，请检查\n");
+        }else if (questiondifficulty.intValue()<1||questiondifficulty.intValue()>5){
             s.append("第"+i+"行第12列难度系数设置不正确，请检查\n");
         }
         return s;
@@ -183,7 +188,7 @@ public class QuestionUpload {
         }else if (questiontype.equals("多项选择题")){
             question.setQuestionType(1);
             questionanswer = questionanswer.toUpperCase();
-        }else if (questiontype.equals("问答题")){
+        }else if (questiontype.equals("填空题")){
             question.setQuestionType(2);
         }else if (questiontype.equals("编程题")){
             question.setQuestionType(3);
